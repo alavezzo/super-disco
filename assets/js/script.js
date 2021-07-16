@@ -96,7 +96,6 @@ let auditTask = function(taskEl) {
     $(taskEl).removeClass()
     $(taskEl).addClass('time-block col-10 hour future') 
 } else { 
-    console.log(dt.hour)
     $(taskEl).removeClass()
     $(taskEl).addClass('time-block col-10 hour present') 
 } 
