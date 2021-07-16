@@ -10,7 +10,7 @@ let setTasks = function() {
         tasks = []
     }
     else {
-
+        tasks = JSON.parse(localStorage.getItem('tasks'))
     }
 }
 
@@ -26,7 +26,7 @@ $(".time-block").on("click", "p", function() {
       .trim();
       console.log(text);
     var textInput = $("<textarea>")
-      .addClass('form-control')
+      .addClass('description')
       .val(text);
     $(this).replaceWith(textInput);
     textInput.trigger('focus');
@@ -60,14 +60,17 @@ $('.time-block').on('blur', 'textarea', function(){
     // replace text area with p element
      $(this).replaceWith(taskP);
 
-     saveTasks(text)
+     saveTasks()
 
   })
 
-let saveTasks = function(text) {
-    $(".hour").each(function(index, el){
-    tasks.push(text)
+let saveTasks = function() {
+    tasks = []
+    $(".description").each(function(index, el){
+        text = $(this).text().trim()
+        tasks.push(text)
     })
+    console.log(tasks)
 }
   
 
