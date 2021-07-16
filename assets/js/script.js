@@ -1,16 +1,26 @@
 let now = luxon.DateTime.now()
 let today = now.toISODate();
-console.log(today)
+let calendar = luxon.DateTime.now().toLocaleString(luxon.DateTime.DATE_FULL)
 tasks = []
 
 localStorage.setItem('today', JSON.stringify(today))
 
-let setTasks = function() {
+let todaysDate = function () {
+    $("#currentDay").text(calendar)
+}
+
+let loadTasks = function() {
     if (today !== JSON.parse(localStorage.getItem('today'))) {
-        tasks = []
+        tasks = [];
     }
+    else if (JSON.parse(localStorage.getItem('tasks'))===null){ 
+        tasks = [];
+    } 
     else {
         tasks = JSON.parse(localStorage.getItem('tasks'))
+        $(".description").each(function(index, el){
+            $(this).text(tasks[index])
+        })
     }
 }
 
@@ -70,12 +80,13 @@ let saveTasks = function() {
         text = $(this).text().trim()
         tasks.push(text)
     })
-    console.log(tasks)
+    localStorage.setItem('tasks', JSON.stringify(tasks))
 }
   
 
 let auditTask = function(taskEl) {
     dt = luxon.DateTime.now();
+    todaysDate();
 
     if (taskEl.getAttribute('hour') < dt.hour) {
         taskTextBoxEl = $('.time-block')
@@ -89,6 +100,8 @@ let auditTask = function(taskEl) {
 }
 }
 
+todaysDate();
+loadTasks();
 warnings();
 
 setInterval(function(){
