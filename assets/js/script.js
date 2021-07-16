@@ -28,7 +28,7 @@ let loadTasks = function() {
 }
 
 let warnings = function() {
-        $(".hour").each(function(index, el){
+        $(".time-block").each(function(index, el){
             auditTask(el);
         })
 }
@@ -38,7 +38,7 @@ $(".time-block").on("click", "p", function() {
       .text()
       .trim();
     var textInput = $("<textarea>")
-      .addClass('description')
+      .addClass('description col-10')
       .val(text);
     $(this).replaceWith(textInput);
     textInput.trigger('focus');
@@ -66,7 +66,7 @@ $('.time-block').on('blur', 'textarea', function(){
   
     // recreate p element
     var taskP =$('<p>')
-      .addClass('description')
+      .addClass('description col-10')
       .text(text);
     
     // replace text area with p element
@@ -91,13 +91,13 @@ let auditTask = function(taskEl) {
 
     if (taskEl.getAttribute('hour') < dt.hour) {
         $(taskEl).removeClass()
-        $(taskEl).addClass('time-block col-10 hour past') 
+        $(taskEl).addClass('row time-block past') 
     } else if (taskEl.getAttribute('hour') > dt.hour) {
     $(taskEl).removeClass()
-    $(taskEl).addClass('time-block col-10 hour future') 
+    $(taskEl).addClass('row time-block future') 
 } else { 
     $(taskEl).removeClass()
-    $(taskEl).addClass('time-block col-10 hour present') 
+    $(taskEl).addClass('row time-block present') 
 } 
     loadTasks();
 }
@@ -106,7 +106,7 @@ loadTasks();
 warnings();
 
 setInterval(function(){
-    $(".hour").each(function(index, el){
+    $(".time-block").each(function(index, el){
       auditTask(el)
     });
   }, ((1000*60)*30))

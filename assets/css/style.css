@@ -9,7 +9,7 @@ p {
   width: 100%;
 }
 
-textarea{
+textarea {
   background: transparent;
   border: none;
   resize: none;
@@ -28,11 +28,11 @@ textarea{
 }
 
 .description {
-  text-align: left;
+  white-space: pre-wrap;
 }
 
 .time-block{
-  text-align: center;
+  text-align: left;
   border-radius: 15px;
 }
 
@@ -42,7 +42,7 @@ textarea{
   border-top: 1px solid white;;
 }
 
-.time {
+.hour {
   background-color: #ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
