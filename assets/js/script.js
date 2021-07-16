@@ -1,3 +1,24 @@
+let now = luxon.DateTime.now()
+let today = now.toISODate();
+console.log(today)
+tasks = []
+
+localStorage.setItem('today', JSON.stringify(today))
+
+let setTasks = function() {
+    if (today !== JSON.parse(localStorage.getItem('today'))) {
+        tasks = []
+    }
+    else {
+
+    }
+}
+
+let warnings = function() {
+        $(".hour").each(function(index, el){
+            auditTask(el);
+        })
+}
 
 $(".time-block").on("click", "p", function() {
     var text = $(this)
@@ -33,12 +54,22 @@ $('.time-block').on('blur', 'textarea', function(){
   
     // recreate p element
     var taskP =$('<p>')
-      .addClass('m-1')
+      .addClass('description')
       .text(text);
     
     // replace text area with p element
      $(this).replaceWith(taskP);
+
+     saveTasks(text)
+
   })
+
+let saveTasks = function(text) {
+    $(".hour").each(function(index, el){
+    tasks.push(text)
+    })
+}
+  
 
 let auditTask = function(taskEl) {
     dt = luxon.DateTime.now();
@@ -55,8 +86,10 @@ let auditTask = function(taskEl) {
 }
 }
 
+warnings();
+
 setInterval(function(){
     $(".hour").each(function(index, el){
       auditTask(el)
     });
-  }, 5000)
+  }, ((1000*60)*30))
