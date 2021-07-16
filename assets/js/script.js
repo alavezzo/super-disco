@@ -34,7 +34,6 @@ $(".time-block").on("click", "p", function() {
     var text = $(this)
       .text()
       .trim();
-      console.log(text);
     var textInput = $("<textarea>")
       .addClass('description')
       .val(text);
