@@ -16,6 +16,7 @@ textarea{
   color: #000000;
   width: 100%;
   border-left: 1px solid black;
+  white-space: normal;
 }
 
 .jumbotron {
@@ -27,7 +28,6 @@ textarea{
 }
 
 .description {
-  white-space: pre-wrap;
   text-align: left;
 }
 
@@ -42,7 +42,7 @@ textarea{
   border-top: 1px solid white;;
 }
 
-.hour {
+.time {
   background-color: #ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
