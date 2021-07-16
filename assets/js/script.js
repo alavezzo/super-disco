@@ -1,11 +1,44 @@
+let now = luxon.DateTime.now()
+let today = now.toISODate();
+let calendar = luxon.DateTime.now().toLocaleString(luxon.DateTime.DATE_FULL)
+tasks = []
+
+
+let todaysDate = function () {
+    localStorage.setItem('today', today)
+    $("#currentDay").text(calendar)
+}
+
+let loadTasks = function() {
+    if (today !== localStorage.getItem('today')) {
+        tasks = [];
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }
+    else if (JSON.parse(localStorage.getItem('tasks'))===null){ 
+        tasks = [];
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    } 
+    else {
+        tasks = JSON.parse(localStorage.getItem('tasks'))
+        $(".description").each(function(index, el){
+            $(this).text(tasks[index])
+        })
+    }
+    todaysDate();
+}
+
+let warnings = function() {
+        $(".time-block").each(function(index, el){
+            auditTask(el);
+        })
+}
 
 $(".time-block").on("click", "p", function() {
     var text = $(this)
       .text()
       .trim();
-      console.log(text);
     var textInput = $("<textarea>")
-      .addClass('form-control')
+      .addClass('description col-10')
       .val(text);
     $(this).replaceWith(textInput);
     textInput.trigger('focus');
@@ -33,30 +66,47 @@ $('.time-block').on('blur', 'textarea', function(){
   
     // recreate p element
     var taskP =$('<p>')
-      .addClass('m-1')
+      .addClass('description col-10')
       .text(text);
     
     // replace text area with p element
      $(this).replaceWith(taskP);
+
+     saveTasks()
+
   })
+
+let saveTasks = function() {
+    tasks = []
+    $(".description").each(function(index, el){
+        text = $(this).text().trim()
+        tasks.push(text)
+    })
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+  
 
 let auditTask = function(taskEl) {
     dt = luxon.DateTime.now();
 
     if (taskEl.getAttribute('hour') < dt.hour) {
-        taskTextBoxEl = $('.time-block')
-        $(taskTextBoxEl).addClass('past') 
-    } else if (taskEl.getAttribute('hour') === dt.hour) { 
-        taskTextBoxEl = $('.time-block')
-        $(taskTextBoxEl).addClass('present') 
-    } else if (taskEl.getAttribute('hour') > dt.hour) { 
-    taskTextBoxEl = $('.time-block')
-    $(taskTextBoxEl).addClass('future') 
-}
+        $(taskEl).removeClass()
+        $(taskEl).addClass('row time-block past') 
+    } else if (taskEl.getAttribute('hour') > dt.hour) {
+    $(taskEl).removeClass()
+    $(taskEl).addClass('row time-block future') 
+} else { 
+    $(taskEl).removeClass()
+    $(taskEl).addClass('row time-block present') 
+} 
+    loadTasks();
 }
 
+loadTasks();
+warnings();
+
 setInterval(function(){
-    $(".hour").each(function(index, el){
+    $(".time-block").each(function(index, el){
       auditTask(el)
     });
-  }, 5000)
+  }, ((1000*60)*30))
