@@ -3,18 +3,20 @@ let today = now.toISODate();
 let calendar = luxon.DateTime.now().toLocaleString(luxon.DateTime.DATE_FULL)
 tasks = []
 
-localStorage.setItem('today', JSON.stringify(today))
 
 let todaysDate = function () {
+    localStorage.setItem('today', today)
     $("#currentDay").text(calendar)
 }
 
 let loadTasks = function() {
-    if (today !== JSON.parse(localStorage.getItem('today'))) {
+    if (today !== localStorage.getItem('today')) {
         tasks = [];
+        localStorage.setItem('tasks', JSON.stringify(tasks))
     }
     else if (JSON.parse(localStorage.getItem('tasks'))===null){ 
         tasks = [];
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     } 
     else {
         tasks = JSON.parse(localStorage.getItem('tasks'))
@@ -22,6 +24,7 @@ let loadTasks = function() {
             $(this).text(tasks[index])
         })
     }
+    todaysDate();
 }
 
 let warnings = function() {
@@ -85,21 +88,21 @@ let saveTasks = function() {
 
 let auditTask = function(taskEl) {
     dt = luxon.DateTime.now();
-    todaysDate();
 
     if (taskEl.getAttribute('hour') < dt.hour) {
-        taskTextBoxEl = $('.time-block')
-        $(taskTextBoxEl).addClass('past') 
-    } else if (taskEl.getAttribute('hour') === dt.hour) { 
-        taskTextBoxEl = $('.time-block')
-        $(taskTextBoxEl).addClass('present') 
-    } else if (taskEl.getAttribute('hour') > dt.hour) { 
-    taskTextBoxEl = $('.time-block')
-    $(taskTextBoxEl).addClass('future') 
-}
+        $(taskEl).removeClass()
+        $(taskEl).addClass('time-block col-10 hour past') 
+    } else if (taskEl.getAttribute('hour') > dt.hour) {
+    $(taskEl).removeClass()
+    $(taskEl).addClass('time-block col-10 hour future') 
+} else { 
+    console.log(dt.hour)
+    $(taskEl).removeClass()
+    $(taskEl).addClass('time-block col-10 hour present') 
+} 
+    loadTasks();
 }
 
-todaysDate();
 loadTasks();
 warnings();
 
